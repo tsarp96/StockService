@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/carts")
+@RequestMapping("/products")
 public class StocksController {
 
     private final StockService stockService;
@@ -22,6 +22,25 @@ public class StocksController {
         this.restService = restService;
         this.stockService = stockService;
     }
+
+    @PostMapping("/{productId}/stocks")
+    public ResponseEntity<Void> addStock(@RequestBody Stock stock, @PathVariable String productId){
+        stockService.createStock(stock);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(stock.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/{productId}/stocks")
+    public ResponseEntity<List<Stock>> getStockByProductId(@PathVariable String productId){
+        return stockService.getStockByProductId(productId);
+    }
+
+
+
 
 
 }
