@@ -36,11 +36,12 @@ public class StocksController {
 
     @GetMapping("/{productId}/stocks")
     public ResponseEntity<List<Stock>> getStockByProductId(@PathVariable String productId){
-        return stockService.getStockByProductId(productId);
+        return ResponseEntity.ok(stockService.getStockByProductId(productId));
     }
 
-
-
-
+    @PatchMapping("/{productId}/stocks")
+    public ResponseEntity<List<Stock>> incrementStockByProductId(@PathVariable String productId, @RequestParam(name = "quantity") int quantitiy){
+        return ResponseEntity.ok(stockService.changeQuantityByProductId(productId, quantitiy));
+    }
 
 }

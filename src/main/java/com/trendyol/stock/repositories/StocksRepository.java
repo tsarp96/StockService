@@ -3,6 +3,7 @@ package com.trendyol.stock.repositories;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.Collection;
 import com.couchbase.client.java.kv.GetResult;
+import com.couchbase.client.java.kv.MutateInSpec;
 import com.couchbase.client.java.query.QueryResult;
 import com.trendyol.stock.domain.Stock;
 import org.springframework.stereotype.Repository;
@@ -41,6 +42,12 @@ public class StocksRepository {
 
     public List<Stock> getStockByItemID(String id) {
         String statement = String.format("Select * from StockDB where itemId = '%s'", id);
+        QueryResult query = couchbaseCluster.query(statement);
+        return query.rowsAs(Stock.class);
+    }
+
+    public List<Stock> changeQuantityByProductId(String productId, int quantity){
+        String statement = String.format("UPDATE StockDB SET quantity = %d WHERE itemID = %s",quantity,productId);
         QueryResult query = couchbaseCluster.query(statement);
         return query.rowsAs(Stock.class);
     }

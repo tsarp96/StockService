@@ -20,7 +20,11 @@ public class StockService {
         stocksRepository.insert(stock);
     }
 
-    public ResponseEntity<List<Stock>> getStockByProductId(String productId) {
-        return ResponseEntity.ok(stocksRepository.getStockByItemID(productId));
+    public List<Stock> getStockByProductId(String productId) {
+        return stocksRepository.getStockByItemID(productId);
+    }
+
+    public List<Stock> changeQuantityByProductId(String productId, int quantity) {
+        return stocksRepository.changeQuantityByProductId(productId, quantity);
     }
 }

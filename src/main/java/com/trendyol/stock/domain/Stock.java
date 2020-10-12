@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class Stock {
     private String id;
-    private String item_id;
+    private String itemId;
     private int quantity;
     private String Address;
 }
