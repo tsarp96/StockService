@@ -36,12 +36,12 @@ public class StocksRepository {
     }
 
     public void deleteById(String stockId){
-        String statement = String.format("Delete from StockDB where id = \"%s\"",stockId);
+        String statement = String.format("Delete from StockDB where id = %s",stockId);
         QueryResult query = couchbaseCluster.query(statement);
     }
 
     public List<Stock> getStockByItemID(String id) {
-        String statement = String.format("Select * from StockDB where itemId = '%s'", id);
+        String statement = String.format("Select id, itemId, quantity from StockDB where itemId = \"%s\"", id);
         QueryResult query = couchbaseCluster.query(statement);
         return query.rowsAs(Stock.class);
     }

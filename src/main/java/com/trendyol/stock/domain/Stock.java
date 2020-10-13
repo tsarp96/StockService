@@ -9,5 +9,4 @@ public class Stock {
     private String id;
     private String itemId;
     private int quantity;
-    private String Address;
 }
