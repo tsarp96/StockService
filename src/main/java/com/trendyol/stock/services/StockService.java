@@ -27,4 +27,7 @@ public class StockService {
     public List<Stock> changeQuantityByProductId(String productId, int quantity) {
         return stocksRepository.changeQuantityByProductId(productId, quantity);
     }
+    public void deleteStock(String id){
+        stocksRepository.deleteById(id);
+    }
 }

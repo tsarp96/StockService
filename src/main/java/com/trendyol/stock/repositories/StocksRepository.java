@@ -36,8 +36,9 @@ public class StocksRepository {
     }
 
     public void deleteById(String stockId){
-        String statement = String.format("Delete from StockDB where id = %s",stockId);
-        QueryResult query = couchbaseCluster.query(statement);
+        /*String statement = String.format("Delete from StockDB where id = %s",stockId);
+        QueryResult query = couchbaseCluster.query(statement);*/
+        stocksCollection.remove(stockId);
     }
 
     public List<Stock> getStockByItemID(String id) {

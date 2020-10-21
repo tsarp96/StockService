@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/products/")
 public class StocksController {
 
     private final StockService stockService;
@@ -28,7 +28,7 @@ public class StocksController {
         stockService.createStock(stock);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("http://localhost:8082/products/"+productId+"/stocks{id}")
                 .buildAndExpand(stock.getId())
                 .toUri();
         return ResponseEntity.created(location).build();
@@ -40,8 +40,13 @@ public class StocksController {
     }
 
     @PatchMapping("/{productId}/stocks")
-    public ResponseEntity<List<Stock>> incrementStockByProductId(@PathVariable String productId, @RequestParam(name = "quantity") int quantitiy){
-        return ResponseEntity.ok(stockService.changeQuantityByProductId(productId, quantitiy));
+    public ResponseEntity<List<Stock>> incrementStockByProductId(@PathVariable String productId, @RequestParam(name = "quantity") int quantity){
+        return ResponseEntity.ok(stockService.changeQuantityByProductId(productId, quantity));
+    }
+    @DeleteMapping ("/stocks/{id}")
+    public ResponseEntity<Void> deleteStock(@PathVariable ("id") String id) {
+        stockService.deleteStock(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
