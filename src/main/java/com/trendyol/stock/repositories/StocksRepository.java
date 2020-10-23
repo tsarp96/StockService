@@ -5,11 +5,8 @@ import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.Collection;
 import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.kv.GetResult;
-import com.couchbase.client.java.kv.MutateInResult;
-import com.couchbase.client.java.kv.MutateInSpec;
 import com.couchbase.client.java.kv.MutationResult;
 import com.couchbase.client.java.query.QueryResult;
-import com.trendyol.stock.domain.AtomicStock;
 import com.trendyol.stock.domain.Stock;
 import org.springframework.stereotype.Repository;
 
