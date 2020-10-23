@@ -24,10 +24,14 @@ public class StockService {
         return stocksRepository.getStockByItemID(productId);
     }
 
-    public List<Stock> changeQuantityByProductId(String productId, int quantity) {
-        return stocksRepository.changeQuantityByProductId(productId, quantity);
+    public void changeQuantityByProductId(String productId, int quantity) {
+        stocksRepository.changeQuantityByProductId(productId, quantity);
     }
     public void deleteStock(String id){
         stocksRepository.deleteById(id);
+    }
+
+    public void changeQuantityById(String stockId, int quantity) {
+        stocksRepository.changeQuantityById(stockId,quantity);
     }
 }

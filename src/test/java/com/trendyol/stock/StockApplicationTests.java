@@ -62,6 +62,8 @@ class StockApplicationTests {
     private StockService stockService;
     @MockBean
     private RestService restService;
+    @MockBean
+    private StocksRepository stocksRepository;
     @InjectMocks
     private StocksController stocksController;
     @Before
@@ -139,7 +141,7 @@ class StockApplicationTests {
         int newQuantity = 10;
 
         //When
-        when(stockService.changeQuantityByProductId(productId,newQuantity)).thenReturn(null);
+        //when(stockService.changeQuantityByProductId(productId,newQuantity)).thenReturn();
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .patch("http://localhost:8082/products/"+productId+"/stocks?quantity="+newQuantity)
                 .accept(MediaType.APPLICATION_JSON)
@@ -174,5 +176,6 @@ class StockApplicationTests {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(o);
     }
+
 
 }

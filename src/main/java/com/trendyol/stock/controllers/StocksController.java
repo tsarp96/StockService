@@ -24,11 +24,11 @@ public class StocksController {
     }
 
     @PostMapping("/{productId}/stocks")
-    public ResponseEntity<Void> addStock(@RequestBody Stock stock, @PathVariable String productId){
+    public ResponseEntity<Void> createStock(@RequestBody Stock stock, @PathVariable String productId){
         stockService.createStock(stock);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("http://localhost:8082/products/"+productId+"/stocks{id}")
+                .path("/{id}")
                 .buildAndExpand(stock.getId())
                 .toUri();
         return ResponseEntity.created(location).build();
@@ -40,9 +40,18 @@ public class StocksController {
     }
 
     @PatchMapping("/{productId}/stocks")
-    public ResponseEntity<List<Stock>> incrementStockByProductId(@PathVariable String productId, @RequestParam(name = "quantity") int quantity){
-        return ResponseEntity.ok(stockService.changeQuantityByProductId(productId, quantity));
+    public ResponseEntity<List<Stock>> changeStockByProductId(@PathVariable String productId, @RequestParam(name = "quantity") int quantity){
+        stockService.changeQuantityByProductId(productId, quantity);
+        return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/stocks/{stockId}")
+    public ResponseEntity<List<Stock>> changeStockByProductId(@RequestParam(name = "quantity") int quantity,
+                                                              @PathVariable String stockId){
+        stockService.changeQuantityById(stockId, quantity);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping ("/stocks/{id}")
     public ResponseEntity<Void> deleteStock(@PathVariable ("id") String id) {
         stockService.deleteStock(id);

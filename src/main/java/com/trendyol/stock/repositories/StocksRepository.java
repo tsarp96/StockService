@@ -1,14 +1,21 @@
 package com.trendyol.stock.repositories;
 
+import com.couchbase.client.core.error.CasMismatchException;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.Collection;
+import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.kv.GetResult;
+import com.couchbase.client.java.kv.MutateInResult;
 import com.couchbase.client.java.kv.MutateInSpec;
+import com.couchbase.client.java.kv.MutationResult;
 import com.couchbase.client.java.query.QueryResult;
+import com.trendyol.stock.domain.AtomicStock;
 import com.trendyol.stock.domain.Stock;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static com.couchbase.client.java.kv.ReplaceOptions.replaceOptions;
 
 @Repository
 public class StocksRepository {
@@ -47,9 +54,25 @@ public class StocksRepository {
         return query.rowsAs(Stock.class);
     }
 
-    public List<Stock> changeQuantityByProductId(String productId, int quantity){
+    public void changeQuantityById(String stockId, int quantity){
+        // Get the current document contents
+        GetResult getResult = stocksCollection.get(stockId);
+        // Change the count on the stock
+        JsonObject content = getResult.contentAsObject();
+        content.put("quantity", quantity);
+        try {
+            // Attempt to replace the document with cas
+            MutationResult result = stocksCollection.replace(stockId, content, replaceOptions().cas(getResult.cas()));
+        } catch (CasMismatchException ex) {
+            // continue the loop on cas mismatch to try again
+            // note that any other exception will be raised and break the loop as well
+        }
+    }
+
+    public Stock changeQuantityByProductId(String productId, int quantity){
         String statement = String.format("UPDATE StockDB SET quantity = %d WHERE itemID = %s",quantity,productId);
         QueryResult query = couchbaseCluster.query(statement);
-        return query.rowsAs(Stock.class);
+        return query.rowsAs(Stock.class).get(0);
     }
+
 }
